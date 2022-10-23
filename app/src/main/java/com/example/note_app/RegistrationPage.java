@@ -1,0 +1,15 @@
+package com.example.note_app;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+
+public class RegistrationPage extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_registration_page);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
+}
