@@ -2,8 +2,11 @@ package com.example.note_app;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -43,8 +46,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
-        db.execSQL("drop table if exists User");
+        db.execSQL("drop table if exists " + USER_TABLE);
         onCreate(db);
+    }
+
+    public boolean AuthUser(String userAddress, String userPassword)
+    {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "select * from " + USER_TABLE + " where " + USER_EMAIL + " = ? and " + USER_PASSWORD + " = ?";
+
+        //the rawQuery method Runs the provided SQL and returns a Cursor over the result set.
+        Cursor cursor = db.rawQuery(query, new String[] {userAddress, userPassword});
+        //Do this before you start doing anything to the cursor. This will make sure the cursor starts at the FIRST row in the database!
+        boolean response = cursor.moveToFirst();
+
+        int index = cursor.getColumnIndex(USER_ID);
+
+        Log.d("info", cursor.getString(index));
+//        Toast.makeText(context.getApplicationContext(), cursor.getString(index), Toast.LENGTH_SHORT).show();
+
+        cursor.close();
+
+        //the .getCount() method Returns the numbers of rows in the cursor.
+        return response;
     }
 
     public boolean AddUser(UserModel user)
@@ -62,14 +87,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         //.insert() returns a long : the row ID of the newly inserted row, or -1 if an error occurred
         long rowID = db.insert(USER_TABLE, null, cv);
 
-        if (rowID == -1)
-        {
-            return false;
-        }
-        else
-        {
-            return true;
-        }
+        return rowID != -1;
     }
 
 }

@@ -2,6 +2,7 @@ package com.example.note_app;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -32,12 +33,11 @@ public class RegistrationPage extends AppCompatActivity {
 
                 UserModel user;
 
+                //the .getText() method Returns Editable The text displayed by the text view.
                 try {
                     user = new UserModel(et_email_address_register.getText().toString(),
                                                     et_password_register.getText().toString(),
                                                     et_username.getText().toString());
-
-                    Toast.makeText(RegistrationPage.this, user.toString(), Toast.LENGTH_LONG).show();
                 }
                 catch (Exception e) {
                     Toast.makeText(RegistrationPage.this, "Registration Failed...", Toast.LENGTH_LONG).show();
@@ -50,8 +50,12 @@ public class RegistrationPage extends AppCompatActivity {
 
                 boolean result = dbHelper.AddUser(user);
 
-                if (result) Toast.makeText(RegistrationPage.this, "Successful registration", Toast.LENGTH_LONG).show();
-                else Toast.makeText(RegistrationPage.this, "Successful registration", Toast.LENGTH_LONG).show();
+                if (result) {
+                    Toast.makeText(RegistrationPage.this, "Successful registration", Toast.LENGTH_LONG).show();
+                    Intent i = new Intent(RegistrationPage.this, HomePage.class);
+                    startActivity(i);
+                }
+                else Toast.makeText(RegistrationPage.this, "Failed registration", Toast.LENGTH_LONG).show();
             }
         });
     }
