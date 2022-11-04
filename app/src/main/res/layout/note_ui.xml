@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/note"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="15dp"
+    android:padding="15dp"
+    android:minHeight="?attr/actionBarSize"
+    tools:layout_editor_absoluteX="1dp"
+    app:cardElevation="12dp"
+    app:cardCornerRadius="16dp"
+    android:backgroundTint="#FFEB3B">
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:rowCount="1"
+        android:columnCount="3"
+        android:layout_gravity="center"
+        android:padding="10dp"
+        >
+
+        <LinearLayout
+            android:layout_columnWeight="5"
+            android:padding="10dp"
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_titleOfNote"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="5sp"
+                android:textColor="@color/black"
+                android:textSize="45sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_dateOfCreation"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="5sp"
+                android:textColor="@color/black"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_columnWeight="1"
+            android:padding="10dp"
+            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content">
+
+            <Button
+                android:id="@+id/btn_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:backgroundTint="#00ff00"
+                android:text="@string/edit" />
+
+            <Button
+                android:id="@+id/btn_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:backgroundTint="#ff0000"
+                android:text="@string/delete" />
+
+        </LinearLayout>
+
+
+    </GridLayout>
+
+</androidx.cardview.widget.CardView>
