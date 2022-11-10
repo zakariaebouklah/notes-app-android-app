@@ -2,6 +2,7 @@ package com.example.note_app;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -199,6 +200,46 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
 
         return listOfNotes;
+    }
+
+    /**
+     * this method delete a note from our db. It's the Delete part of the CRUD.
+     * @param noteSelected
+     */
+    public void deleteNote(NoteModel noteSelected)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(NOTE_TABLE, "" + NOTE_CREATION_DATE + " = ? ", new String[]{ noteSelected.getN_createdAt() });
+    }
+
+    public String getDateTime()
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+
+                "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+
+        dateFormat.setTimeZone(TimeZone.getTimeZone("Africa/Casablanca"));
+
+        Date date = new Date();
+
+        return dateFormat.format(date);
+    }
+
+    public boolean updateNote(NoteModel note)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(NOTE_TITLE, note.getN_title());
+        cv.put(NOTE_BODY, note.getN_body());
+        cv.put(NOTE_CREATION_DATE, getDateTime());
+
+        int response = db.update(NOTE_TABLE, cv, "" + NOTE_CREATION_DATE + " = ? " , new String[]{note.getN_createdAt()});
+
+        db.close();
+
+        return response == -1;
+
     }
 
 }

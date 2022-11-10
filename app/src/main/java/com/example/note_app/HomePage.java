@@ -4,22 +4,26 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ListView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class HomePage extends AppCompatActivity {
+import java.util.List;
+
+public class HomePage extends AppCompatActivity{
+
+    private List<NoteModel> notes;
+    private NotesAdapter adapter;
 
     FloatingActionButton btn_new_note;
 //    ListView lv_notes;
     private RecyclerView rv_notes;
-    private RecyclerView.ViewHolder viewHolder;
     private RecyclerView.LayoutManager manager;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +35,7 @@ public class HomePage extends AppCompatActivity {
         btn_new_note.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(HomePage.this, NewNote.class);
+                Intent i = new Intent(HomePage.this, ComposeNote.class);
                 startActivity(i);
             }
         });
@@ -58,7 +62,7 @@ public class HomePage extends AppCompatActivity {
         /*
          * switching to adapter class to create a cool layout for our list.
          */
-
+        notes = db.getAllNotes();
         rv_notes = findViewById(R.id.rv_notes);
 
         //this setting is used to gain some performance.
@@ -69,7 +73,8 @@ public class HomePage extends AppCompatActivity {
         rv_notes.setLayoutManager(manager);
 
         //specifying an adapter for the recyclerView.
-        NotesAdapter adapter = new NotesAdapter(HomePage.this, db.getAllNotes());
+        adapter = new NotesAdapter(HomePage.this, notes);
         rv_notes.setAdapter(adapter);
+
     }
 }
