@@ -6,22 +6,44 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private Context context;
 
     public static final String dbName = "NoteAppDB";
-    public static final int dbVersion = 1;
+
+    /**
+     * PS: Very Important note: each time we update the database structure (new table for e.g.)
+     * we must then increment the database version ; otherwise the db will remain unchangeable
+     * thus the new table will not be created.
+     */
+    public static final int dbVersion = 2;
+
+    //User Table
 
     public static final String USER_TABLE = "User";
     public static final String USER_ID = "_id";
     public static final String USER_USERNAME = "username";
     public static final String USER_EMAIL = "email_address";
     public static final String USER_PASSWORD = "password";
+
+    //Note Table
+
+    public static final String NOTE_TABLE = "Note";
+    public static final String NOTE_ID = "n_id";
+    public static final String NOTE_TITLE = "title";
+    public static final String NOTE_BODY = "body";
+    public static final String NOTE_CREATION_DATE = "createdAt";
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, dbName, null, dbVersion);
@@ -37,6 +59,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String query = "create table " + USER_TABLE + " ( " + USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT" +
                        ", " + USER_USERNAME + " TEXT, " + USER_EMAIL + " TEXT, " + USER_PASSWORD + " TEXT);";
         db.execSQL(query);
+
+        String query2 = "create table " + NOTE_TABLE + " (" + NOTE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+                        + NOTE_TITLE + " TEXT, " + NOTE_BODY + " TEXT, " + NOTE_CREATION_DATE + " TEXT);";
+        db.execSQL(query2);
     }
 
     /**
@@ -47,8 +73,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL("drop table if exists " + USER_TABLE);
+        db.execSQL("drop table if exists " + NOTE_TABLE);
         onCreate(db);
     }
+
+    /**
+     * this method is used to authenticate user into the app.
+     * @param userAddress
+     * @param userPassword
+     * @return
+     */
 
     public boolean AuthUser(String userAddress, String userPassword)
     {
@@ -72,6 +106,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return response;
     }
 
+    /**
+     * this method is used to create new user into the app.
+     * @param user
+     * @return
+     */
     public boolean AddUser(UserModel user)
     {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -88,6 +127,78 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long rowID = db.insert(USER_TABLE, null, cv);
 
         return rowID != -1;
+    }
+
+    //CRUD operations for Note entity:
+
+    /**
+     * this method will add new note into the app. It's the create step in CRUD process.
+     * @param note
+     * @return rowID of the row inserted in the Note table
+     */
+
+    public boolean createNewNote(NoteModel note)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(NOTE_TITLE, note.getN_title());
+        cv.put(NOTE_BODY, note.getN_body());
+        cv.put(NOTE_CREATION_DATE, note.getN_createdAt());
+
+        long rowID = db.insert(NOTE_TABLE, null, cv);
+
+        Log.d("info", "INSERTED");
+
+        db.close();
+
+        return rowID != -1;
+    }
+
+    /**
+     * this method will fetch all notes objects in our db. It's the Read part of the CRUD.
+     * @return a list of all available Notes in the database.
+     */
+    public List<NoteModel> getAllNotes()
+    {
+        List<NoteModel> listOfNotes = new ArrayList<NoteModel>();
+
+        //get an instance of database to read from it:
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        //SQL query to get all notes from the Note table.
+        String query = "select * from " + NOTE_TABLE + " order by " + NOTE_CREATION_DATE + " DESC";
+
+        //execute SQL query:
+        Cursor cursor = db.rawQuery(query, null);
+
+        /*
+         * check if cursor can move to the first element and grab it:
+         * if true then loop through all results(Notes) & create new NoteModel object for each record.
+         * else make a toast for e.g.
+         */
+
+        if (cursor.moveToFirst())
+        {
+            do {
+                NoteModel note = new NoteModel(
+                        cursor.getString(1),
+                        cursor.getString(2),
+                        cursor.getString(3)
+                );
+
+                //add each completed note to the list that will be displayed in the home page.
+
+                listOfNotes.add(note);
+
+            } while(cursor.moveToNext());
+        }
+
+        //Remember to close the cursor & the db each time we do a fetch from db.
+        cursor.close();
+        db.close();
+
+        return listOfNotes;
     }
 
 }

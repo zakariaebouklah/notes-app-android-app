@@ -13,7 +13,17 @@
         android:theme="@style/Theme.Noteapp"
         tools:targetApi="31">
         <activity
+            android:name=".NewNote"
+            android:label="New Note"
+            android:exported="false"
+            android:parentActivityName=".HomePage">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".HomePage"
+            android:label="Home of Notes"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"

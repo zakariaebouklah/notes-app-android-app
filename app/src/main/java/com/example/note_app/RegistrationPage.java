@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.Objects;
+
 public class RegistrationPage extends AppCompatActivity {
 
     Button btn_sign_up;
@@ -19,7 +21,7 @@ public class RegistrationPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration_page);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         et_email_address_register = findViewById(R.id.et_email_address_register);
         et_password_register = findViewById(R.id.et_password_register);
@@ -33,11 +35,22 @@ public class RegistrationPage extends AppCompatActivity {
 
                 UserModel user;
 
-                //the .getText() method Returns Editable The text displayed by the text view.
+                //the .getText() method Returns Editable: The text displayed by the text view.
                 try {
                     user = new UserModel(et_email_address_register.getText().toString(),
                                                     et_password_register.getText().toString(),
                                                     et_username.getText().toString());
+
+                    if
+                    (
+                            et_email_address_register.getText().toString().equals("")
+                            || et_password_register.getText().toString().equals("")
+                            || et_username.getText().toString().equals("")
+                    )
+                    {
+                        Toast.makeText(RegistrationPage.this, "Registration Failed: Fill the empty fields...", Toast.LENGTH_LONG).show();
+                        return;
+                    }
                 }
                 catch (Exception e) {
                     Toast.makeText(RegistrationPage.this, "Registration Failed...", Toast.LENGTH_LONG).show();

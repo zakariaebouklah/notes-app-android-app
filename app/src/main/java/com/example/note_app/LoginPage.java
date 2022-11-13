@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.Objects;
+
 public class LoginPage extends AppCompatActivity {
 
     Button btn_sign_in;
@@ -20,7 +22,7 @@ public class LoginPage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_page);
         //enabling the back button in the login page...
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
 
         et_email_address_login = findViewById(R.id.et_email_address_login);
         et_password_login = findViewById(R.id.et_password_login);
@@ -38,6 +40,12 @@ public class LoginPage extends AppCompatActivity {
                             et_email_address_login.getText().toString(),
                             et_password_login.getText().toString()
                     );
+
+                    if(et_email_address_login.getText().toString().equals("") || et_password_login.getText().toString().equals(""))
+                    {
+                        Toast.makeText(LoginPage.this, "Login Failed: Fill the empty fields...", Toast.LENGTH_LONG).show();
+                        return;
+                    }
 
                     if (res_auth)
                     {
