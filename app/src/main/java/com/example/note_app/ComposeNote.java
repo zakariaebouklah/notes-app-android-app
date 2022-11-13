@@ -7,10 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -19,10 +17,12 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.TimeZone;
 
-public class NewNote extends AppCompatActivity {
+public class ComposeNote extends AppCompatActivity {
 
     Button btn_done;
     EditText et_note_title, et_note_body;
+
+    Boolean editing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +35,20 @@ public class NewNote extends AppCompatActivity {
 
         et_note_title = findViewById(R.id.et_note_title);
         et_note_body = findViewById(R.id.et_note_body);
+
+        if(getIntent().getExtras() != null)
+        {
+            et_note_title.setText(getIntent().getExtras().getString("TITLE"));
+            et_note_body.setText(getIntent().getExtras().getString("BODY"));
+        }
+
+        if (et_note_title.getText().toString().equals("") && et_note_body.getText().toString().equals(""))
+        {
+            editing = false;
+        }
+        else {
+            editing = true;
+        }
 
         btn_done.setOnClickListener(new View.OnClickListener() {
 
@@ -52,25 +66,40 @@ public class NewNote extends AppCompatActivity {
             }
 
 
-            private void nextBehaviour(DatabaseHelper db, NoteModel note) {
-                boolean result = db.createNewNote(note);
-                if (result)
+            private void nextBehaviour(DatabaseHelper db, NoteModel note, Boolean editing) {
+                if (!editing)
                 {
-                    Intent intent = new Intent(NewNote.this, HomePage.class);
-                    intent.putExtra("title", note.getN_title());
-                    intent.putExtra("dateOfCreation", note.getN_createdAt());
-                    startActivity(intent);
+                    boolean result = db.createNewNote(note);
+                    if (result)
+                    {
+                        Intent intent = new Intent(ComposeNote.this, HomePage.class);
+                        startActivity(intent);
+                    }
+                    else
+                    {
+                        Toast.makeText(ComposeNote.this, "An Error Occurred somewhere...", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 else
                 {
-                    Toast.makeText(NewNote.this, "An Error Occurred somewhere...", Toast.LENGTH_SHORT).show();
+                    boolean result = db.updateNote(new NoteModel(et_note_title.getText().toString(), et_note_body.getText().toString(), getIntent().getExtras().getString("DATE")));
+                    Log.d("info", "result : " + result);
+                    if (!result)
+                    {
+                        Intent intent = new Intent(ComposeNote.this, HomePage.class);
+                        startActivity(intent);
+                    }
+                    else
+                    {
+                        Toast.makeText(ComposeNote.this, "An Error Occurred somewhere...", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
 
             @Override
             public void onClick(View view) {
 
-                DatabaseHelper db = new DatabaseHelper(NewNote.this);
+                DatabaseHelper db = new DatabaseHelper(ComposeNote.this);
 
                 NoteModel note;
 
@@ -82,7 +111,7 @@ public class NewNote extends AppCompatActivity {
                                 getDateTime()
                             );
 
-                    nextBehaviour(db, note);
+                    nextBehaviour(db, note, editing);
                 }
                 else
                 {
@@ -94,7 +123,7 @@ public class NewNote extends AppCompatActivity {
                                 getDateTime()
                         );
 
-                        nextBehaviour(db, note);
+                        nextBehaviour(db, note, editing);
                     }
                     else if(et_note_body.getText().toString().equals("") && !et_note_title.getText().toString().equals(""))
                     {
@@ -104,7 +133,7 @@ public class NewNote extends AppCompatActivity {
                                 getDateTime()
                         );
 
-                        nextBehaviour(db, note);
+                        nextBehaviour(db, note, editing);
                     }
                     else
                     {
@@ -114,7 +143,7 @@ public class NewNote extends AppCompatActivity {
                                 getDateTime()
                         );
 
-                        nextBehaviour(db, note);
+                        nextBehaviour(db, note, editing);
                     }
                 }
 
@@ -134,7 +163,7 @@ public class NewNote extends AppCompatActivity {
 //                Log.d("info", "arr : " + arr.toString());
 
                 NotesAdapter adapter = new NotesAdapter(getApplicationContext(), db.getAllNotes());
-                rv_notes.setAdapter(adapter);
+//                rv_notes.setAdapter(adapter);
             }
         });
     }

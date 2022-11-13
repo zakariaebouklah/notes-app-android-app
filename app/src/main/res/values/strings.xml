@@ -11,4 +11,7 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="are_you_sure_you_want_to_delete_this_note">Are You Sure You Want To Delete This Note?</string>
+    <string name="yes_continue">Yes, Continue</string>
+    <string name="no_go_back">No, Go Back</string>
 </resources>
