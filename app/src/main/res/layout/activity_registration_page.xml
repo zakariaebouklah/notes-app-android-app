@@ -7,6 +7,7 @@
     tools:context=".MainActivity">
 
     <EditText
+        style="@style/ET"
         android:id="@+id/et_email_address_register"
         android:layout_width="305dp"
         android:layout_height="78dp"
@@ -23,6 +24,7 @@
         app:layout_constraintVertical_bias="0.659" />
 
     <EditText
+        style="@style/ET"
         android:id="@+id/et_password_register"
         android:layout_width="305dp"
         android:layout_height="78dp"
@@ -39,10 +41,10 @@
         app:layout_constraintVertical_bias="0.302" />
 
     <TextView
+        style="@style/TV_BG"
         android:id="@+id/textView"
         android:layout_width="411dp"
         android:layout_height="235dp"
-        android:background="#673AB7"
         android:fontFamily="@font/league_script"
         android:gravity="center"
         android:text="Register yourself to experience this wonderful app"
@@ -66,6 +68,7 @@
         app:layout_constraintVertical_bias="0.777" />
 
     <EditText
+        style="@style/ET"
         android:id="@+id/et_username"
         android:layout_width="305dp"
         android:layout_height="78dp"
