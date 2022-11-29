@@ -3,6 +3,7 @@ package com.example.note_app;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 
 import android.content.Intent;
@@ -22,7 +23,6 @@ public class HomePage extends AppCompatActivity{
 //    ListView lv_notes;
     private RecyclerView rv_notes;
     private RecyclerView.LayoutManager manager;
-
 
 
     @Override
@@ -69,7 +69,9 @@ public class HomePage extends AppCompatActivity{
         rv_notes.setHasFixedSize(true);
 
         //use a linear layoutManager.
-        manager = new LinearLayoutManager(HomePage.this);
+//        manager = new LinearLayoutManager(HomePage.this);
+        //Update: use a Staggered-grid layoutManager
+        manager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
         rv_notes.setLayoutManager(manager);
 
         //specifying an adapter for the recyclerView.

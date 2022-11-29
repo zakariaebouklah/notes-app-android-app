@@ -4,9 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    style="@style/SCREEN_BG">
 
     <Button
+        style="@style/BUTTON_BG"
+        android:textSize="15dp"
+        android:gravity="center"
         android:id="@+id/btn_register"
         android:layout_width="126dp"
         android:layout_height="57dp"
@@ -21,10 +25,10 @@
         app:layout_constraintVertical_bias="1.0" />
 
     <TextView
+        style="@style/TV_BG"
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="403dp"
-        android:background="#673AB7"
         android:fontFamily="@font/league_script"
         android:gravity="center"
         android:text="Hello User"
@@ -36,6 +40,9 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        style="@style/BUTTON_BG"
+        android:textSize="15dp"
+        android:gravity="center"
         android:id="@+id/btn_login"
         android:layout_width="126dp"
         android:layout_height="57dp"

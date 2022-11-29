@@ -2,15 +2,50 @@
     <!-- Base application theme. -->
     <style name="Theme.Noteapp" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/black</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryVariant">#242424</item>
+<!--        <item name="colorOnPrimary">@color/black</item>-->
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
         <item name="colorSecondaryVariant">@color/teal_200</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorOnSecondary">@color/dark_yellow</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">#FFC800</item>
         <!-- Customize your theme here. -->
+        <item name="android:actionBarTheme">@color/c24</item>
     </style>
+
+    <!-- Dark Mode -->
+    <!-- Screen Background if dark mode is ON -->
+
+    <style name="SCREEN_BG">
+        <item name="android:background">@color/c24</item>
+    </style>
+
+    <!-- Text Color if dark mode is ON -->
+
+    <style name="TEXT_COL">
+        <item name="android:background">#FFFFFF</item>
+    </style>
+
+    <!-- Button Background if dark mode is ON -->
+
+    <style name="BUTTON_BG">
+        <item name="android:backgroundTint">#000</item>
+<!--        <item name="android:fontFamily">@font/league_script</item>-->
+        <item name="android:textColor">#FFF</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- TextView Background if dark mode is ON -->
+
+    <style name="TV_BG">
+        <item name="android:background">#FFC800</item>
+    </style>
+
+    <style name="ET">
+        <item name="android:backgroundTint">@color/c24</item>
+        <!--        <item name="android:textColor">@color/white</item>-->
+    </style>
+
 </resources>
