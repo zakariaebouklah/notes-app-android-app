@@ -19,7 +19,7 @@
     <!-- Screen Background if dark mode is ON -->
 
     <style name="SCREEN_BG">
-        <item name="android:background">#242424</item>
+        <item name="android:background">@color/c24</item>
     </style>
 
     <!-- Text Color if dark mode is ON -->

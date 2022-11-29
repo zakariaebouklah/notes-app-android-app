@@ -3,6 +3,7 @@ package com.example.note_app;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,7 +16,9 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHolder> implements PopupMenu.OnMenuItemClickListener{
 
@@ -67,7 +70,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
     public void onBindViewHolder(@NonNull NotesAdapter.NotesViewHolder holder, int position) {
         holder.tv_titleOfNote.setText(notesList.get(position).getN_title());
         holder.tv_dateOfCreation.setText(notesList.get(position).getN_createdAt());
-        //setting click listener on the cardView (the note) .
+
+        //Generate a New color randomly foreach new card created:
+
+        Random rnd = new Random();
+        int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+        holder.cv_notes.setCardBackgroundColor(color);
+
+        //setting click listener on the cardView (the note) :
         holder.cv_notes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
