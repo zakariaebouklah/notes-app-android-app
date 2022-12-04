@@ -82,6 +82,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
+    public boolean LogoutUser()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(USER_STATUS, "0");
+
+        int response = db.update(
+                USER_TABLE, cv, "" + USER_ID + " = ? ", new String[]{this.getCurrentUserID()}
+        );
+
+        db.close();
+
+        return response == -1;
+    }
+
     /**
      * this method is used to authenticate user into the app.
      * @param userAddress
@@ -91,6 +107,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public boolean AuthUser(String userAddress, String userPassword)
     {
+        makeUserActive(userAddress, userPassword);
+
         SQLiteDatabase db = this.getReadableDatabase();
 
         String query = "select * from " + USER_TABLE + " where " + USER_EMAIL + " = ? and " + USER_PASSWORD + " = ?";
@@ -135,6 +153,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return rowID != -1;
     }
 
+    public boolean makeUserActive(String email, String password)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+        cv.put(USER_STATUS, "1");
+
+        int res = db.update(
+                USER_TABLE,
+                cv,
+                "" + USER_PASSWORD + " = ? and " + USER_EMAIL + " = ? ",
+                new String[]{password, email}
+        );
+
+        db.close();
+
+        return res == -1;
+    }
+
     //CRUD operations for Note entity:
 
     /**
@@ -175,11 +212,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         //SQL query to get all notes from the Note table.
 //        String query = "select * from " + NOTE_TABLE + " order by " + NOTE_CREATION_DATE + " DESC";
-        String query = "select * from " + NOTE_TABLE + " inner join " + USER_TABLE +
+        /*String query = "select * from " + NOTE_TABLE + " inner join " + USER_TABLE +
                        " on " + " Note.authorID = User._id " +
-                       " order by " + NOTE_CREATION_DATE + " DESC;";
+                       " order by " + NOTE_CREATION_DATE + " DESC;";*/
 
-        //Update: SELECT note.title, note.body, note.created_at, note.authorID FROM `note` JOIN `user` ON note.authorID = user.id WHERE user.id = 3;
+        //Update:
+        // SELECT note.title, note.body, note.created_at, note.authorID FROM `note` JOIN `user` ON note.authorID = user.id WHERE user.id = 3;
+
+        String query = "select * from " + NOTE_TABLE + " inner join " + USER_TABLE + " on " +
+                       " Note.authorID = User._id " + " where " + USER_ID + " = " + getCurrentUserID()
+                       + " order by " + NOTE_CREATION_DATE + " DESC;";
 
         //execute SQL query:
         Cursor cursor = db.rawQuery(query, null);
@@ -264,9 +306,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.query(USER_TABLE, new String[]{USER_ID}, USER_STATUS + " = ? ", new String[]{"1"}, null, null ,null);
-        cursor.moveToFirst();
+        if(cursor.moveToFirst()) return cursor.getString(0);
 
-        return cursor.getString(0);
+        return "";
     }
 
 }

@@ -43,6 +43,10 @@ public class HomePage extends AppCompatActivity{
         if(item.getItemId() == R.id.logout)
         {
             Intent i = new Intent(this, MainActivity.class);
+
+            DatabaseHelper db = new DatabaseHelper(HomePage.this);
+            db.LogoutUser();
+
             startActivity(i);
         }
 
