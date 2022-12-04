@@ -7,11 +7,21 @@ public class UserModel {
     private String u_address;
     private String u_password;
     private String u_username;
+    private String u_status;
 
-    public UserModel(String u_address, String u_password, String u_username) {
+    public String getU_status() {
+        return u_status;
+    }
+
+    public void setU_status(String u_status) {
+        this.u_status = u_status;
+    }
+
+    public UserModel(String u_address, String u_password, String u_username, String u_status) {
         this.u_address = u_address;
         this.u_password = u_password;
         this.u_username = u_username;
+        this.u_status = u_status;
     }
 
     public UserModel() {}

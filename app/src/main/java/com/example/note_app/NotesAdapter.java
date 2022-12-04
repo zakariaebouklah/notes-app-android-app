@@ -34,6 +34,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
             i.putExtra("TITLE", note.getN_title());
             i.putExtra("BODY", note.getN_body());
             i.putExtra("DATE", note.getN_createdAt());
+            i.putExtra("AUTHORID", note.getN_authorId());
             context.startActivity(i);
         }
 
@@ -52,6 +53,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         popupMenu.show();
     }
 
+    //Constructor
     public NotesAdapter(Context context, List<NoteModel> notesList) {
         this.context = context;
         this.notesList = notesList;
@@ -117,14 +119,14 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         return false;
     }
 
-    private void updateRecyclerView(List<NoteModel> notes) {
+    /*private void updateRecyclerView(List<NoteModel> notes) {
         rv_notes = rv_notes.findViewById(R.id.rv_notes);
         rv_notes.setHasFixedSize(true);
-//        rv_notes.setLayoutManager();
+        rv_notes.setLayoutManager();
         context.startActivity(new Intent(context.getApplicationContext(), HomePage.class));
-//        NotesAdapter notesAdapter = new NotesAdapter(context, notes);
-//        rv_notes.setAdapter(notesAdapter);
-    }
+        NotesAdapter notesAdapter = new NotesAdapter(context, notes);
+        rv_notes.setAdapter(notesAdapter);
+    }*/
 
     public static class NotesViewHolder extends RecyclerView.ViewHolder{
         TextView tv_titleOfNote, tv_dateOfCreation;
