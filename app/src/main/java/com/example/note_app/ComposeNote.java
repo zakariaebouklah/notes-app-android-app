@@ -52,6 +52,11 @@ public class ComposeNote extends AppCompatActivity {
 
         btn_done.setOnClickListener(new View.OnClickListener() {
 
+            /**
+             * this function is used to capture the DateTime of creation in the moment when we click on "DONE" button
+             * the DateTime is formatted so that it can be stored as String in Database
+             * @return
+             */
             public String getDateTime()
             {
                 SimpleDateFormat dateFormat = new SimpleDateFormat(
@@ -66,6 +71,12 @@ public class ComposeNote extends AppCompatActivity {
             }
 
 
+            /**
+             * This function describes next step after either success creation of note or failure:
+             * @param db
+             * @param note
+             * @param editing
+             */
             private void nextBehaviour(DatabaseHelper db, NoteModel note, Boolean editing) {
                 if (!editing)
                 {
@@ -82,7 +93,12 @@ public class ComposeNote extends AppCompatActivity {
                 }
                 else
                 {
-                    boolean result = db.updateNote(new NoteModel(et_note_title.getText().toString(), et_note_body.getText().toString(), getIntent().getExtras().getString("DATE")));
+                    boolean result = db.updateNote(new NoteModel(
+                            et_note_title.getText().toString(),
+                            et_note_body.getText().toString(),
+                            getIntent().getExtras().getString("DATE"),
+                            Integer.parseInt(getIntent().getExtras().getString("AUTHORID")))
+                    );
                     Log.d("info", "result : " + result);
                     if (!result)
                     {
@@ -96,6 +112,7 @@ public class ComposeNote extends AppCompatActivity {
                 }
             }
 
+            //The Click Handler:
             @Override
             public void onClick(View view) {
 
@@ -108,7 +125,8 @@ public class ComposeNote extends AppCompatActivity {
                     note = new NoteModel(
                                 et_note_title.getText().toString(),
                                 et_note_body.getText().toString(),
-                                getDateTime()
+                                getDateTime(),
+                                Integer.parseInt(db.getCurrentUserID())
                             );
 
                     nextBehaviour(db, note, editing);
@@ -120,7 +138,8 @@ public class ComposeNote extends AppCompatActivity {
                         note = new NoteModel(
                                 "Untitled",
                                 et_note_body.getText().toString(),
-                                getDateTime()
+                                getDateTime(),
+                                Integer.parseInt(db.getCurrentUserID())
                         );
 
                         nextBehaviour(db, note, editing);
@@ -130,7 +149,8 @@ public class ComposeNote extends AppCompatActivity {
                         note = new NoteModel(
                                 et_note_title.getText().toString(),
                                 "No additional text",
-                                getDateTime()
+                                getDateTime(),
+                                Integer.parseInt(db.getCurrentUserID())
                         );
 
                         nextBehaviour(db, note, editing);
@@ -140,7 +160,8 @@ public class ComposeNote extends AppCompatActivity {
                         note = new NoteModel(
                                 "Untitled",
                                 "No additional text",
-                                getDateTime()
+                                getDateTime(),
+                                Integer.parseInt(db.getCurrentUserID())
                         );
 
                         nextBehaviour(db, note, editing);
@@ -166,5 +187,6 @@ public class ComposeNote extends AppCompatActivity {
 //                rv_notes.setAdapter(adapter);
             }
         });
+
     }
 }

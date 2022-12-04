@@ -39,7 +39,9 @@ public class RegistrationPage extends AppCompatActivity {
                 try {
                     user = new UserModel(et_email_address_register.getText().toString(),
                                                     et_password_register.getText().toString(),
-                                                    et_username.getText().toString());
+                                                    et_username.getText().toString(),
+                                                    "1"
+                    );
 
                     if
                     (
@@ -56,7 +58,9 @@ public class RegistrationPage extends AppCompatActivity {
                     Toast.makeText(RegistrationPage.this, "Registration Failed...", Toast.LENGTH_LONG).show();
                     user = new UserModel("error@error.com",
                             "error1234567",
-                            "ErrorUser");
+                            "ErrorUser",
+                            "0"
+                    );
                 }
 
                 DatabaseHelper dbHelper = new DatabaseHelper(RegistrationPage.this);
@@ -66,6 +70,7 @@ public class RegistrationPage extends AppCompatActivity {
                 if (result) {
                     Toast.makeText(RegistrationPage.this, "Successful registration", Toast.LENGTH_LONG).show();
                     Intent i = new Intent(RegistrationPage.this, HomePage.class);
+                    i.putExtra("STATUS", "1");
                     startActivity(i);
                 }
                 else Toast.makeText(RegistrationPage.this, "Failed registration", Toast.LENGTH_LONG).show();

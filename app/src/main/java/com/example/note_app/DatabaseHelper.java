@@ -1,5 +1,6 @@
 package com.example.note_app;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -28,7 +29,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * we must then increment the database version ; otherwise the db will remain unchangeable
      * thus the new table will not be created.
      */
-    public static final int dbVersion = 2;
+    public static final int dbVersion = 5;
 
     //User Table
 
@@ -37,6 +38,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String USER_USERNAME = "username";
     public static final String USER_EMAIL = "email_address";
     public static final String USER_PASSWORD = "password";
+    public static final String USER_STATUS = "status";
 
     //Note Table
 
@@ -45,6 +47,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String NOTE_TITLE = "title";
     public static final String NOTE_BODY = "body";
     public static final String NOTE_CREATION_DATE = "createdAt";
+    public static final String NOTE_AUTHOR = "authorId";
 
     public DatabaseHelper(@Nullable Context context) {
         super(context, dbName, null, dbVersion);
@@ -58,11 +61,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String query = "create table " + USER_TABLE + " ( " + USER_ID + " INTEGER PRIMARY KEY AUTOINCREMENT" +
-                       ", " + USER_USERNAME + " TEXT, " + USER_EMAIL + " TEXT, " + USER_PASSWORD + " TEXT);";
+                       ", " + USER_USERNAME + " TEXT, " + USER_EMAIL + " TEXT, " + USER_PASSWORD + " TEXT, " + USER_STATUS + " TEXT);";
         db.execSQL(query);
 
         String query2 = "create table " + NOTE_TABLE + " (" + NOTE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-                        + NOTE_TITLE + " TEXT, " + NOTE_BODY + " TEXT, " + NOTE_CREATION_DATE + " TEXT);";
+                        + NOTE_TITLE + " TEXT, " + NOTE_BODY + " TEXT, " + NOTE_CREATION_DATE + " TEXT, " + NOTE_AUTHOR + " INTEGER, " +
+                        "FOREIGN KEY (" + NOTE_AUTHOR + ") REFERENCES " + USER_TABLE + "(" + USER_ID + "));";
         db.execSQL(query2);
     }
 
@@ -121,6 +125,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(USER_USERNAME, user.getU_username());
         cv.put(USER_EMAIL, user.getU_address());
         cv.put(USER_PASSWORD, user.getU_password());
+        cv.put(USER_STATUS, user.getU_status());
 
         //PS: we didn't put a kvp for user ID because it will be auto-generated (auto-incremented)
 
@@ -146,6 +151,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cv.put(NOTE_TITLE, note.getN_title());
         cv.put(NOTE_BODY, note.getN_body());
         cv.put(NOTE_CREATION_DATE, note.getN_createdAt());
+        cv.put(NOTE_AUTHOR, note.getN_authorId());
 
         long rowID = db.insert(NOTE_TABLE, null, cv);
 
@@ -168,7 +174,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         //SQL query to get all notes from the Note table.
-        String query = "select * from " + NOTE_TABLE + " order by " + NOTE_CREATION_DATE + " DESC";
+//        String query = "select * from " + NOTE_TABLE + " order by " + NOTE_CREATION_DATE + " DESC";
+        String query = "select * from " + NOTE_TABLE + " inner join " + USER_TABLE +
+                       " on " + " Note.authorID = User._id " +
+                       " order by " + NOTE_CREATION_DATE + " DESC;";
+
+        //Update: SELECT note.title, note.body, note.created_at, note.authorID FROM `note` JOIN `user` ON note.authorID = user.id WHERE user.id = 3;
 
         //execute SQL query:
         Cursor cursor = db.rawQuery(query, null);
@@ -185,7 +196,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 NoteModel note = new NoteModel(
                         cursor.getString(1),
                         cursor.getString(2),
-                        cursor.getString(3)
+                        cursor.getString(3),
+                        cursor.getInt(4)
                 );
 
                 //add each completed note to the list that will be displayed in the home page.
@@ -212,19 +224,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.delete(NOTE_TABLE, "" + NOTE_CREATION_DATE + " = ? ", new String[]{ noteSelected.getN_createdAt() });
     }
 
-    public String getDateTime()
-    {
-        SimpleDateFormat dateFormat = new SimpleDateFormat(
-
-                "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-
-        dateFormat.setTimeZone(TimeZone.getTimeZone("Africa/Casablanca"));
-
-        Date date = new Date();
-
-        return dateFormat.format(date);
-    }
-
+    /**
+     * this method delete a note from our db. It's the Update part of the CRUD.
+     * @param note
+     * @return
+     */
     public boolean updateNote(NoteModel note)
     {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -240,6 +244,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return response == -1;
 
+    }
+
+    public String getDateTime()
+    {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+
+                "yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+
+        dateFormat.setTimeZone(TimeZone.getTimeZone("Africa/Casablanca"));
+
+        Date date = new Date();
+
+        return dateFormat.format(date);
+    }
+
+    @SuppressLint("Range")
+    public String getCurrentUserID()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.query(USER_TABLE, new String[]{USER_ID}, USER_STATUS + " = ? ", new String[]{"1"}, null, null ,null);
+        cursor.moveToFirst();
+
+        return cursor.getString(0);
     }
 
 }

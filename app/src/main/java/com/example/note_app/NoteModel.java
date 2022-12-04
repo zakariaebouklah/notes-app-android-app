@@ -4,15 +4,25 @@ public class NoteModel {
     private String n_title;
     private String n_body;
     private String n_createdAt;
+    private  int n_authorId;
 
-    public NoteModel(String n_title, String n_body, String n_createdAt) {
+    public NoteModel(String n_title, String n_body, String n_createdAt, int n_authorId) {
         this.n_title = n_title;
         this.n_body = n_body;
         this.n_createdAt = n_createdAt;
+        this.n_authorId = n_authorId;
     }
 
     public String getN_createdAt() {
         return n_createdAt;
+    }
+
+    public int getN_authorId() {
+        return n_authorId;
+    }
+
+    public void setN_authorId(int n_authorId) {
+        this.n_authorId = n_authorId;
     }
 
     public void setN_createdAt(String n_createdAt) {
