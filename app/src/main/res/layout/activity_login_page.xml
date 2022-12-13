@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <TextView
+        style="@style/TV_BG"
+        android:id="@+id/textViewLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="80dp"
+        android:paddingBottom="80dp"
+        android:fontFamily="@font/lobster_two_italic"
+        android:gravity="center"
+        android:text="@string/login_title"
+        android:textColor="@color/white"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textSize="50sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayoutFormLog"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_below="@+id/textViewLogin"
+        android:paddingTop="40dp"
+        android:paddingBottom="40dp">
+        <EditText
+            style="@style/ET"
+            android:id="@+id/et_email_address_login"
+            android:layout_width="305dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="24dp"
+            android:ems="10"
+            android:hint="Email address here..."
+            android:inputType="textEmailAddress"
+            android:padding="15dp"
+            android:background="@drawable/input_field"/>
+
+        <EditText
+            style="@style/ET"
+            android:id="@+id/et_password_login"
+            android:layout_width="305dp"
+            android:layout_height="60dp"
+            android:layout_marginBottom="24dp"
+            android:ems="10"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:padding="15dp"
+            android:background="@drawable/input_field"/>
+
+        <!--
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/
+            et_email_address_login"
+            app:layout_constraintVertical_bias="0.571"
+        -->
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayoutFormLog"
+        android:gravity="center_horizontal">
+        <Button
+            android:id="@+id/btn_sign_in"
+            android:layout_width="126dp"
+            android:layout_height="60dp"
+            android:text="Sign In" />
+    </LinearLayout>
+
+</RelativeLayout>
