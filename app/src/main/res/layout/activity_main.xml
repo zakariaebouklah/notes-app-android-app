@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,31 +7,16 @@
     tools:context=".MainActivity"
     style="@style/SCREEN_BG">
 
-    <Button
-        style="@style/BUTTON_BG"
-        android:textSize="15dp"
-        android:gravity="center"
-        android:id="@+id/btn_register"
-        android:layout_width="126dp"
-        android:layout_height="57dp"
-        android:layout_marginBottom="156dp"
-        android:onClick="launchRegistration"
-        android:text="Register"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.785"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
-        style="@style/TV_BG"
         android:id="@+id/textView"
+        style="@style/TV_BG"
         android:layout_width="match_parent"
         android:layout_height="403dp"
-        android:fontFamily="@font/league_script"
+        android:fontFamily="@font/lobster_two_italic"
         android:gravity="center"
-        android:text="Hello User"
+        android:text="@string/firstpage_title"
+        android:textColor="@color/white"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         android:textSize="50dp"
@@ -39,20 +24,33 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        style="@style/BUTTON_BG"
-        android:textSize="15dp"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:gravity="center"
-        android:id="@+id/btn_login"
-        android:layout_width="126dp"
-        android:layout_height="57dp"
-        android:layout_marginBottom="156dp"
-        android:onClick="launchLogin"
-        android:text="Login"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.228"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:layout_constraintVertical_bias="1.0" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:layout_below="@+id/textView"
+        android:padding="20dp">
+        <Button
+            style="@style/BUTTON_BG"
+            android:textSize="15dp"
+            android:gravity="center"
+            android:id="@+id/btn_register"
+            android:layout_width="126dp"
+            android:layout_height="57dp"
+            android:layout_marginRight="10dp"
+            android:onClick="launchRegistration"
+            android:text="Register" />
+        <Button
+            style="@style/BUTTON_BG"
+            android:textSize="15dp"
+            android:gravity="center"
+            android:id="@+id/btn_login"
+            android:layout_width="126dp"
+            android:layout_height="57dp"
+            android:layout_marginLeft="10dp"
+            android:onClick="launchLogin"
+            android:text="Login" />
+    </LinearLayout>
+
+
+</RelativeLayout>

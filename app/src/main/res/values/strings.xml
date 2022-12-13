@@ -14,4 +14,9 @@
     <string name="are_you_sure_you_want_to_delete_this_note">Are You Sure You Want To Delete This Note?</string>
     <string name="yes_continue">Yes, Continue</string>
     <string name="no_go_back">No, Go Back</string>
+
+    <!-- Layout Titles -->
+    <string name="firstpage_title">Write &amp; Save your notes here</string>
+    <string name="login_title">Login here</string>
+    <string name="registration_title">Register here and start this experience</string>
 </resources>

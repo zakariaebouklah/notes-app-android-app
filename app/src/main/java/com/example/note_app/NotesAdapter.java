@@ -46,6 +46,13 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         }
     };
 
+    //start searchview
+    public void setFilteredList(List<NoteModel> filteredList){
+        this.notesList = filteredList;
+        notifyDataSetChanged();
+    }
+    //end searchview
+
     private void showTheDialog(CardView cardView) {
         PopupMenu popupMenu = new PopupMenu(context, cardView);
         popupMenu.setOnMenuItemClickListener(this);
