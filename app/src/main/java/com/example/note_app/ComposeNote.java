@@ -97,8 +97,8 @@ public class ComposeNote extends AppCompatActivity {
                             et_note_title.getText().toString(),
                             et_note_body.getText().toString(),
                             getIntent().getExtras().getString("DATE"),
-                            Integer.parseInt(getIntent().getExtras().getString("AUTHORID")))
-                    );
+                            Integer.parseInt(db.getCurrentUserID())
+                    ));
                     Log.d("info", "result : " + result);
                     if (!result)
                     {

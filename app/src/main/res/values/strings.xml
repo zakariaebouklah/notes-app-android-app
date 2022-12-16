@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">note-app</string>
+    <string name="app_name">My Notes</string>
     <string name="title_activity_home_page">HomePage</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -17,6 +17,6 @@
 
     <!-- Layout Titles -->
     <string name="firstpage_title">Write &amp; Save your notes here</string>
-    <string name="login_title">Login here</string>
+    <string name="login_title">Login here to get started</string>
     <string name="registration_title">Register here and start this experience</string>
 </resources>
